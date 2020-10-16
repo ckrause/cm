@@ -178,9 +178,12 @@ void Miner::mine( volatile sig_atomic_t &exit_flag )
     {
       time = time2;
       Log::get().info( "Generated " + std::to_string( generated ) + " programs" );
-      Metrics::get().write( "generated", settings_labels, generated );
-      Metrics::get().write( "fresh", settings_labels, fresh );
-      Metrics::get().write( "updated", settings_labels, updated );
+      settings_labels["kind"] = "generated";
+      Metrics::get().write( "programs", settings_labels, generated );
+      settings_labels["kind"] = "new";
+      Metrics::get().write( "programs", settings_labels, fresh );
+      settings_labels["kind"] = "updated";
+      Metrics::get().write( "programs", settings_labels, updated );
       generated = 0;
       fresh = 0;
       updated = 0;
